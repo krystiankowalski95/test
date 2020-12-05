@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+<h:head>
+    <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'/>
+    <link href='../css/content.css' rel='stylesheet'/>
+    <h:outputStylesheet name="/css/content.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <ui:insert name="head">
+        <title>Template</title>
+    </ui:insert>
+</h:head>
+<h:body>
+    <div class = "wrapper">		
+        <div class = "header" style="background: #{roleController.headerColorForRole}">
+            <p:sidebar  widgetVar="sb" baseZIndex="100000">
+                <div class="sidebar-container">
+                <ui:fragment id="admin-sidebar" rendered="#{roleController.isSelectedRole(roleController.getRoleAdmin())}">
+                    <h1>#{msg['page.template.admin.console']}</h1>
+                    <p:button styleClass="sidebar-button" id="listAccountsButton" value="#{msg['page.template.admin.listAccounts']}" outcome="/admin/listAccounts.xhtml"/>
+                    <p:button styleClass="sidebar-button" id="addAccountButton" value="#{msg['page.template.admin.addAccount']}" outcome="/admin/addAccount.xhtml"/>
+                </ui:fragment>
+                <ui:fragment id="manager-sidebar" rendered="#{roleController.isSelectedRole(roleController.getRoleManager())}">
+                    <h1>#{msg['page.template.manager.console']}</h1>
+                    <p:button styleClass="sidebar-button" id="listReservationsButton" value="#{msg['page.template.manager.listReservations']}" outcome="/manager/listReservations.xhtml"/>
+                    <p:button styleClass="sidebar-button" id="addHallButton" value="#{msg['page.template.manager.addhall']}" outcome="/manager/addHall.xhtml"/>
+                    <p:button styleClass="sidebar-button" id="listExtraServicesButton" value="#{msg['page.listextraservices.breadcrumbs']}" outcome="/listExtraServices.xhtml" />
+                    <p:button styleClass="sidebar-button" id="addExtraServiceButton" value="#{msg['page.template.manager.addextraservice']}" outcome="/manager/addExtraService.xhtml" />
+                </ui:fragment>
+                <p:commandButton styleClass="sidebar-button" value="#{msg['page.template.hide']}" oncomplete="PF('sb').hide()"/>
+                </div>
+            </p:sidebar>
+             <div class = "header-left">
+                 <p:commandLink styleClass="menu-button" id="menu-button" oncomplete="PF('sb').show()" rendered="#{roleController.isSelectedRole(roleController.getRoleAdmin()) or roleController.isSelectedRole(roleController.getRoleManager())}">
+                     <i id="menu-bars" class="pi pi-bars"/>
+                 </p:commandLink>
+                 <h:link class="logo" outcome="/index.xhtml"/>
+             </div>
+            <div class = "header-right">
+
+                <ui:fragment id="guest-right-links" rendered="#{empty request.remoteUser}">
+                    <h:link id="loginButton" class="link" outcome="/login/login.xhtml">#{msg['page.template.login']}</h:link>
+                    <h:link id="registerButton" class="link" outcome="/register.xhtml">#{msg['page.template.signup']}</h:link>
+                </ui:fragment>
+                 <ui:fragment id="user-details" rendered="#{not empty request.remoteUser}">
+                     <h:form style="padding-left: 20px">
+                         <p:commandButton id="dynaButton" value="#{request.remoteUser}" type="button" icon="pi pi-user" />
+                         <p:slideMenu id="slidemenu-user" overlay="true" trigger="dynaButton" my="left top" at="left bottom" backLabel="#{msg['page.template.menu.backbutton']}">
+                             <p:submenu id="accountDetailsMenu" label="#{msg['page.template.accountdetails']}" icon="pi pi-pencil" >
+                                 <p:menuitem id="changePasswordButton" value="${msg['page.template.changepassword']}" outcome="/changePassword.xhtml"/>
+                                 <p:menuitem id="accountDetailsButton" value="#{msg['page.template.accountdetails']}" action="#{ownAccountDetailsController.selectOwnAccount()}" />
+                             </p:submenu>
+                             <c:if test="#{roleController.selectedRole.equalsIgnoreCase(roleController.getRoleClient())}">
+                                 <p:menuitem id="isClient" value="#{msg['page.changelevel.client']}" icon="pi pi-id-card" disabled="true"/>
+                                 <p:menuitem id="reservations" value="#{msg['page.template.client.reservations']}" icon="pi pi-id-card" outcome="/client/clientReservationsPage.xhtml" />
+                             </c:if>
+                             <c:if test="#{roleController.selectedRole.equalsIgnoreCase(roleController.getRoleManager())}">
+                                 <p:menuitem id="isManager" value="#{msg['page.changelevel.manager']}" icon="pi pi-id-card" disabled="true"/>
+                             </c:if>
+                             <c:if test="#{roleController.selectedRole.equalsIgnoreCase(roleController.getRoleAdmin())}">
+                                 <p:menuitem id="isAdmin" value="#{msg['page.changelevel.admin']}" icon="pi pi-id-card" disabled="true"/>
+                             </c:if>
+                             <p:submenu id="changeRoleButton" label="#{msg['page.template.changerole']}" rendered="#{roleController.allUserRolesLength > 1}" icon="pi pi-user-edit">
+                                 <c:if test="#{roleController.isInClientRole()}">
+                                     <p:menuitem id="changeClient" value="#{msg['page.changelevel.client']}" action="#{roleController.setCurrentRole(roleController.getRoleClient())}"  ajax="false"/>
+                                 </c:if>
+                                 <c:if test="#{roleController.isInManagerRole()}">
+                                     <p:menuitem id="changeManager" value="#{msg['page.changelevel.manager']}" action="#{roleController.setCurrentRole(roleController.getRoleManager())}" ajax="false"/>
+                                 </c:if>
+                                 <c:if test="#{roleController.isInAdminRole()}">
+                                     <p:menuitem id="changeAdmin" value="#{msg['page.changelevel.admin']}" action="#{roleController.setCurrentRole(roleController.getRoleAdmin())}" ajax="false"/>
+                                 </c:if>
+                             </p:submenu>
+                             <p:menuitem id="logoutButton" value="#{msg['page.template.logout']}" icon="pi pi-sign-out" action="#{logoutController.logout()}"/>
+                         </p:slideMenu>
+                     </h:form>
+                 </ui:fragment>
+
+                <h:link id="reviewButton" class="link" outcome="/listReviews.xhtml">#{msg['page.template.reviews']}</h:link>
+                <h:link id="listExtraServicesButtonClient" class="link" outcome="/listExtraServices.xhtml" rendered="#{roleController.isSelectedRole(roleController.getRoleClient())}">
+                    #{msg['page.template.extraservices']}
+                </h:link>
+                <h:link id="hallsButton" class="link" outcome="/listHalls.xhtml">#{msg['page.template.halls']}</h:link>
+             </div>
+        </div>
+        <div class ="breadcrumb">
+            <h:form>
+                <p:breadCrumb>
+                    <p:menuitem value="Home" outcome="/index.xhtml"/>
+                    <ui:insert name="breadcrumb-menuitems"/>
+                </p:breadCrumb>
+            </h:form>
+        </div>
+        <div class = "main">
+            <p:ajaxStatus onstart="PF('loading').show()" onsuccess="PF('loading').hide()" />
+            <p:dialog widgetVar="loading" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                <p:graphicImage id="loading-gif" library="library" name="loading.gif" />
+            </p:dialog>
+            <ui:insert name="content"/>
+        </div>
+
+        <div class = "footer">
+            <div class="footer-left">
+                <h:outputText styleClass="footer-aggregate" value="#{getAggregateController.totalGuestNumber}"/>
+            </div>
+            <div class ="footer-text">2020 @SSBD05</div>
+            <div class ="footer-right">
+                <h:outputText styleClass="footer-aggregate" value="#{getAggregateController.averageGuestNumber}"/>
+            </div>
+        </div>
+    </div>
+    <h:form>
+        <p:growl id="informationBox" showDetail="true" sticky="true"/>
+    </h:form>
+</h:body>
+</html>

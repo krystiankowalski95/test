@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template = "/templates/template.xhtml">
+    <ui:define name="head">
+        <title>#{msg['page.listreservations.title']}</title>
+    </ui:define>
+    <ui:define name = "content">
+        <h:form id="form1" style="margin-bottom: auto">
+            <div style="width: auto; background-color: #626163">
+                <p:inputText id="filterReservationsTextbox" value="#{listReservationsController.reservationFilter}"  style="width: 87.8%; border-radius: 0" placeholder="#{msg['page.listreservations.filterbox']}"/>
+                <p:commandButton id="resrvationFilterButton" value="#{msg['page.listaccounts.filter']}" style="float: right; width: 12%; border-radius: 0"
+                                 action="#{listReservationsController.filterReservations}"
+                                 update="resrvationFilterButton, :form1"/>
+            </div>
+            <p:dataTable var="reservation" value="#{listReservationsController.reservations}" emptyMessage="#{msg['page.listreservations.list.empty']}" >
+                <p:column headerText="#{msg['page.listreservations.reservation.hall.name']}">
+                    <h:outputText value="#{reservation.hallName}"/>
+                </p:column>
+                <p:column headerText="#{msg['page.listreservations.reservation.status']}">
+                    <h:outputText value="#{listReservationsController.resourceBundles.getTranslatedText(reservation.statusName)}"/>
+                </p:column>
+                <p:column headerText="#{msg['page.listreservations.reservation.event.type']}">
+                    <h:outputText value="#{listReservationsController.resourceBundles.getTranslatedText(reservation.eventTypeName)}"/>
+                </p:column>
+                <p:column headerText="#{msg['page.listreservations.reservation.client.login']}">
+                    <h:outputText value="#{reservation.clientDTO.login}"/>
+                </p:column>
+                <p:column headerText="#{msg['page.listreservations.reservation.name']}">
+                    <h:outputText value="#{reservation.clientDTO.getPersonalDetails()}"/>
+                </p:column>
+                <p:column headerText="#{msg['page.listreservations.reservation.client.email']}">
+                    <h:outputText value="#{reservation.clientDTO.email}"/>
+                </p:column>
+                <p:column headerText="#{msg['page.listreservations.reservation.details']}">
+                    <p:commandButton id="goDetailsButton" value="#{msg['page.listreservations.reservation.details']}" action="#{listReservationsController.goToDetails(reservation.reservationNumber)}"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+    <ui:define name="breadcrumb-menuitems">
+        <p:menuitem value="#{msg['page.listreservations.breadcrumbs']}" outcome="/manager/listReservations.xhtml" />
+    </ui:define>
+</ui:composition>
+</html>

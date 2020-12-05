@@ -1,0 +1,248 @@
+.wrapper {
+    display:flex;
+    height: 100vh;
+    flex-direction: column;
+}
+
+.main{
+    display:flex;
+    flex-direction: column;
+    flex:1;
+    align-items:center;
+    justify-content:center;
+}
+
+.header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 998;
+    width: 100%;
+    min-height: 90px;
+}
+
+.header-left{
+    display:flex;
+    align-items: center;
+    margin-left: 40px;
+    flex-grow: 1;
+}
+
+.header-right{
+    display:flex;
+    flex-grow: 2;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    margin-right: 30px;
+}
+
+.logo {
+    cursor: pointer;
+    background-size: 85px 85px;
+    background-image: url("../../pictures/logo.png");
+    width: 85px;
+    height: 85px;
+}
+
+.link {
+    font-weight: bold;
+    text-decoration: none;
+    margin: 0 20px;
+    font-size: 25px;
+    cursor: pointer;
+    color: white;
+}
+
+.footer{
+    display: flex;
+    z-index: 997;
+    width: 100%;
+    height: 25px;
+    justify-content: center;
+    align-items: center;
+    font-size: 17px;
+    background-color: #31708e;
+    color: white;
+}
+
+.templatetext {
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+}
+.error-div {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 10vh;
+    justify-content: space-between;
+}
+
+.error-panel {
+    min-width: 30vw;
+}
+
+.error-description {
+    font-size: 24px !important
+}
+body{
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    font-family: 'Open Sans', sans-serif;
+}
+
+body .ui-widget-overlay{
+   width: 0 !important ; /* Overlay primefaces zasłaniał całą strone*/
+}
+
+body .ui-message{
+   padding:0;
+}
+.sidebar-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1{
+    font-weight: normal;
+}
+
+#menu-bars{
+    font-size: 3em;
+    color: white
+}
+
+#slidemenu-user{
+    width: 180px;
+}
+
+#loading-gif{
+    max-width: 50px;
+    max-height: 50px;
+}
+
+.sidebar-button{
+    margin: 2px 0 !important;
+    min-width: 12em;
+}
+
+.review-div{
+    display: flex;
+    flex-direction: column;
+    width: 50vw;
+    word-break: break-word;
+
+}
+
+.review-fieldset{
+    margin-bottom: 1em;
+}
+
+.review-date{
+    align-self: end;
+    margin-top: 1em;
+    font-style: italic;
+}
+
+.review-content{
+    font-size: 15px;
+}
+
+fieldset > legend{
+    font-weight: bolder !important;
+}
+
+#pagination{
+    display: flex;
+    justify-content: center;
+    margin-top: 1em;
+    align-items: baseline;
+}
+
+#reviews-repeat{
+    margin-bottom: auto;
+}
+
+.reviews-nav-text-number{
+    margin-left: 0.25em;
+}
+
+.reviews-nav{
+    margin: 0 0.25em;
+}
+
+.reviews-nav-button-prev{
+    margin-right: 0.5em !important;
+}
+
+.reviews-nav-button-next{
+    margin-left: 0.5em !important;
+}
+
+#reviews-div-perpage{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 1em;
+}
+
+#reviews-form-nav{
+    margin-top: 0.32em;
+}
+#reviews-form-nav:prevpage{
+    margin-right: 0.5em;
+}
+#reviews-form-nav:nextpage{
+    margin: 0 0.5em;
+}
+#reviews-form-inside{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.add-review-button{
+    margin-left: 0.5em !important;
+}
+
+#add-review-div{
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-remove-review-div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 20vw;
+    min-height: 20vh;
+}
+
+.edit-remove-review-button{
+    align-self: center;
+}
+
+.remove-review-buttons-div{
+    margin: auto;
+    display: flex;
+}
+
+.footer-aggregate{
+    font-size: 15px;
+    margin: 0 1em;
+}
+
+.footer-right{
+    text-align: right;
+    padding-right: 20px;
+    flex: 1;
+}
+
+.footer-left{
+    text-align: left;
+    flex: 1;
+}
+

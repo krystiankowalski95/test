@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+
+<ui:composition template = "./templates/template.xhtml">
+    <ui:define name="head">
+        <style type="text/css">
+            .main{
+                background-image: url('pictures/backgroundLogin.jpg');
+                background-repeat: no-repeat;
+                background-position: center;
+                background-attachment: fixed;
+                background-size: cover;
+            }
+        </style>
+        <script src="https://www.google.com/recaptcha/api.js" type=""></script>
+        <title>#{msg['page.registration.account.title']}</title>
+    </ui:define>
+    <ui:define name = "content">
+            <h:form id="register">
+                <p:panel id="registrationPanel" header="#{msg['page.registration.account.title']}"
+                         style="font-size: 24px;">
+                    <div style="display:flex; flex-direction: column;text-align: center;margin: auto;">
+                        <p:inputText id="login" required="true" value="#{registrationController.login}"
+                                     requiredMessage="#{msg['page.registration.account.login.required']}"
+                                     placeholder="#{msg['page.registration.account.login']} *"
+                                     validatorMessage="#{msg['page.registration.login.validator']}">
+                            <f:validateRegex pattern="[a-zA-Z0-9!@#$%^*]+"/>
+                            <f:validateLength minimum="1" maximum="32"/>
+                        </p:inputText>
+                        <p:password id="password" required="true" feedback="true" promptLabel="#{msg['password.prompt']}"
+                                    weakLabel="#{msg['password.weak']}" goodLabel="#{msg['password.good']}" strongLabel="#{msg['password.strong']}"
+                                    inline="true"  requiredMessage="#{msg['page.registration.account.password.required']}"
+                                    value="#{registrationController.password}" validatorMessage="#{msg['page.registration.account.password.validation']}" placeholder="#{msg['page.registration.account.password']} *">
+                            <f:validateRegex pattern="((?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%])(?=.*[A-Z]).{8,64})" />
+                        </p:password>
+                        <p:password id="confirmPassword" required="true" feedback="false" promptLabel="#{msg['confirmpassword.prompt']}"
+                                    requiredMessage="#{msg['page.registration.account.confirmPassword.required']}"
+                                    validator="#{passwordValidator.validatePasswordMatch}"
+                                    value="#{registrationController.confirmPassword}" placeholder="#{msg['page.registration.account.confirmPassword']} *"/>
+                        <p:inputText id="firstName" required="true"
+                                         value="#{registrationController.firstname}" requiredMessage="#{msg['page.registration.account.firstname.required']}"
+                                         placeholder="#{msg['page.registration.account.firstname']} *"
+                                         validatorMessage="#{msg['page.edit.firstname.validator']}">
+                                <f:validateRegex pattern="^[A-ZĄĆĘŁŃÓŚŹŻ]{1}[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+"/>
+                                <f:validateLength minimum="1" maximum="32" />
+                        </p:inputText>
+                        <p:inputText id="lastName" required="true" requiredMessage="#{msg['page.registration.account.lastname.required']}"
+                                         value="#{registrationController.lastname}" placeholder="#{msg['page.registration.account.lastname']} *"
+                                         validatorMessage="#{msg['page.edit.lastname.validator']}">
+                                <f:validateRegex pattern="^[A-ZĄĆĘŁŃÓŚŹŻ]{1}[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
+                                <f:validateLength minimum="1" maximum="32" />
+                            </p:inputText>
+                        <p:inputText id="emailAddress" required="true"
+                                         value="#{registrationController.emailAddress}" validatorMessage="#{msg['page.registration.account.email.validation']}" requiredMessage="#{msg['page.registration.account.email.required']}" placeholder="#{msg['page.registration.account.email']} *">
+                                <f:validateRegex
+                                        pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                            </p:inputText>
+                        <br/>
+                    </div>
+                    <div style="display:flex; flex-direction: column;">
+                        <p:captcha id="Captcha" requiredMessage="#{msg['page.registration.account.captcha.required']}" 
+                                   required="true" language="#{msg['page.registration.account.captcha.language']}"/>
+                        <p:messages>
+                            <p:autoUpdate/>
+                        </p:messages>
+                    </div>
+                    <h:panelGrid columns="3" cellpadding="5" style="margin: 0 auto;background-color: transparent">
+                        <p:commandButton value="#{msg['page.registration.account.reset']}" validateClient="true"
+                                         style="margin-right:20px;" icon="pi pi-undo">
+                            <p:ajax update="register" resetValues="true" />
+                        </p:commandButton>
+                        <p:commandButton id="submit" ajax="false" value="#{msg['page.registration.account.register']}" icon="pi pi-check" style="float: center;" action="#{registrationController.register()}"/>
+                    </h:panelGrid>
+
+                </p:panel>
+            </h:form>
+    </ui:define>
+    <ui:define name="breadcrumb-menuitems">
+        <p:menuitem value="#{msg['page.registration.breadcrumbs']}" outcome="/register.xhtml" />
+    </ui:define>
+</ui:composition>
+</html>
